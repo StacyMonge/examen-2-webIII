@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package products;
+
+service ProductService {
+    rpc GetProducts (Empty) returns (ProductList);
+    rpc GetProductById (ProductId) returns (Product);
+    rpc CreateProduct (Product) returns (Product);
+    rpc UpdateProduct (Product) returns (Product);
+    rpc DeleteProduct (ProductId) returns (OperationResponse);
+
+    rpc GetProductsByCategory (CategoryFilter) returns (ProductList);
+    rpc GetProductSummaries (Empty) returns (ProductSummaryList);
+    rpc GetProductDetails (ProductId) returns (ProductDetails);
+}
+
+message Empty {}
+
+message ProductId {
+    int32 id = 1;
+}
+
+message Product {
+    int32 id = 1;
+    string name = 2;
+    double price = 3;
+    int32 categoryId = 4;
+    int32 supplierId = 5;
+}
+
+message ProductList {
+    repeated Product products = 1;
+}
+
+message OperationResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message CategoryFilter {
+    int32 categoryId = 1;
+}
+
+message ProductSummary {
+    string name = 1;
+    double price = 2;
+}
+
+message ProductSummaryList {
+    repeated ProductSummary products = 1;
+}
+
+message ProductDetails {
+    Product product = 1;
+    Category category = 2;
+    Supplier supplier = 3;
+}
+
+message Category {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message Supplier {
+    int32 id = 1;
+    string name = 2;
+    string country = 3;
+}
