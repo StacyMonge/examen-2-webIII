@@ -1,0 +1,22 @@
+{
+  "name": "grpc-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.7",
+    "@grpc/proto-loader": "^0.8.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.9.1"
+  },
+  "allowScripts": {
+    "protobufjs@7.6.6": true
+  }
+}

@@ -10,7 +10,8 @@
   "type": "module",
   "dependencies": {
     "@grpc/grpc-js": "^1.14.7",
-    "@grpc/proto-loader": "^0.8.1"
+    "@grpc/proto-loader": "^0.8.1",
+    "jsonwebtoken": "^9.0.3"
   },
   "allowScripts": {
     "protobufjs@7.6.6": true

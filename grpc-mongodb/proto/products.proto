@@ -1,0 +1,155 @@
+
+syntax = "proto3";
+
+package products;
+
+// Información de un producto
+message Product {
+    int32 id = 1;
+    string name = 2;
+    double price = 3;
+    int32 categoryId = 4;
+    int32 supplierId = 5;
+    int32 stock = 6;
+}
+
+// Respuesta con varios productos
+message ProductList {
+    repeated Product products = 1;
+}
+
+// Información resumida de un producto
+message ProductSummary {
+    string name = 1;
+    double price = 2;
+}
+
+// Respuesta con resúmenes
+message ProductSummaryList {
+    repeated ProductSummary products = 1;
+}
+
+// Producto con información de su categoría y proveedor
+message ProductWithDetails {
+    int32 id = 1;
+    string name = 2;
+    double price = 3;
+    int32 stock = 4;
+    string category = 5;
+    string supplier = 6;
+    string country = 7;
+}
+
+// Lista de productos con sus relaciones
+message ProductWithDetailsList {
+    repeated ProductWithDetails products = 1;
+}
+
+// Solicitud para buscar por ID
+message ProductIdRequest {
+    int32 id = 1;
+}
+
+// Solicitud para filtrar por categoría
+message CategoryRequest {
+    int32 categoryId = 1;
+}
+
+// Solicitud para crear un producto
+message CreateProductRequest {
+    string name = 1;
+    double price = 2;
+    int32 categoryId = 3;
+    int32 supplierId = 4;
+    int32 stock = 5;
+}
+
+// Solicitud para actualizar un producto
+message UpdateProductRequest {
+    int32 id = 1;
+    string name = 2;
+    double price = 3;
+    int32 categoryId = 4;
+    int32 supplierId = 5;
+    int32 stock = 6;
+}
+
+// Respuesta general
+message ProductResponse {
+    bool success = 1;
+    string message = 2;
+    Product product = 3;
+}
+
+// Respuesta para eliminación
+message DeleteResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Solicitud para paginación
+message ProductPageRequest {
+    int32 page = 1;
+    int32 pageSize = 2;
+    string sortBy = 3;
+    string sortOrder = 4;
+}
+
+// Respuesta de paginación
+message ProductPageResponse {
+    repeated Product products = 1;
+    int32 total = 2;
+    int32 page = 3;
+    int32 pageSize = 4;
+}
+
+// Solicitud para resumen de productos
+message EmptyRequest {}
+
+// Solicitud para iniciar sesión
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+// Respuesta del inicio de sesión
+message LoginResponse {
+    bool success = 1;
+    string message = 2;
+    string token = 3;
+}
+
+// Definición de servicios
+service ProductService {
+
+    // Iniciar sesión
+    rpc Login(LoginRequest) returns (LoginResponse);
+
+    // Consultar todos los productos
+    rpc GetProducts(EmptyRequest) returns (ProductList);
+
+    // Consultar un producto por ID
+    rpc GetProductById(ProductIdRequest) returns (ProductResponse);
+
+    // Filtrar productos por categoría
+    rpc GetProductsByCategory(CategoryRequest) returns (ProductList);
+
+    // Crear producto
+    rpc CreateProduct(CreateProductRequest) returns (ProductResponse);
+
+    // Actualizar producto
+    rpc UpdateProduct(UpdateProductRequest) returns (ProductResponse);
+
+    // Eliminar producto
+    rpc DeleteProduct(ProductIdRequest) returns (DeleteResponse);
+
+    // Consultar productos con campos específicos
+    rpc GetProductSummaries(EmptyRequest) returns (ProductSummaryList);
+
+    // Consultar productos paginados y ordenados
+    rpc GetProductsPaginated(ProductPageRequest) returns (ProductPageResponse);
+
+    rpc GetProductsWithDetails(EmptyRequest) returns (ProductWithDetailsList);
+
+    
+}
