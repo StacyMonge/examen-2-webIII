@@ -1,0 +1,335 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f3f8;
+    color: #263248;
+}
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    background: #334e80;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 auto 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #7b8495;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d9deea;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #334e80;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: #334e80;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #263c68;
+}
+
+#message {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.footer {
+    text-align: center;
+    color: #929aaa;
+    font-size: 12px;
+    margin-top: 25px;
+}
+
+
+/* PANEL PRINCIPAL */
+
+.topbar {
+    background: #263c68;
+    color: white;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar strong {
+    background: white;
+    color: #263c68;
+    padding: 9px;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.logout-button {
+    width: auto;
+    padding: 10px 18px;
+    background: #ffffff;
+    color: #263c68;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    text-align: left;
+}
+
+.welcome p,
+.section-heading p {
+    color: #7b8495;
+    margin-top: 8px;
+}
+
+.stats {
+    margin-bottom: 25px;
+}
+
+.stat-card,
+.panel {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+
+.stat-card {
+    max-width: 250px;
+}
+
+.stat-card span {
+    color: #7b8495;
+}
+
+.stat-card h2 {
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.panel {
+    margin-bottom: 25px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+.section-heading h2,
+.form-panel h2 {
+    margin: 0;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters input {
+    flex: 1;
+    min-width: 160px;
+    margin: 0;
+}
+
+.filters button,
+.form-actions button {
+    width: auto;
+    padding: 12px 18px;
+}
+
+.secondary-button {
+    background: #e9edf5;
+    color: #263c68;
+}
+
+.secondary-button:hover {
+    background: #dce3ef;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #edf0f5;
+}
+
+th {
+    background: #f5f7fb;
+    color: #465574;
+}
+
+.small-button {
+    width: auto;
+    padding: 8px 12px;
+    margin: 3px;
+    font-size: 12px;
+}
+
+.delete-button {
+    background: #c94c4c;
+}
+
+.delete-button:hover {
+    background: #a93838;
+}
+
+.form-panel {
+    display: block;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.form-grid input {
+    margin-bottom: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 650px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* HERRAMIENTAS ADICIONALES */
+
+.advanced-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.advanced-tools button {
+    width: auto;
+    padding: 12px 18px;
+}
+
+.advanced-tools select {
+    padding: 10px;
+    border: 1px solid #d9deea;
+    border-radius: 8px;
+    background: white;
+}
+
+.result-panel {
+    background: #f5f7fb;
+    border-radius: 10px;
+    padding: 18px;
+    margin: 18px 0;
+}
+
+.result-panel h3 {
+    margin-bottom: 12px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.pagination button {
+    width: auto;
+    padding: 10px 18px;
+}

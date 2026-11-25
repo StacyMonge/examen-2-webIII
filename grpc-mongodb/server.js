@@ -1,4 +1,4 @@
-
+﻿
 import grpc from "@grpc/grpc-js";
 import protoLoader from "@grpc/proto-loader";
 import { connectDB } from "./config/database.js";
@@ -22,10 +22,10 @@ const productService = proto.products.ProductService;
 let db;
 let productsCollection;
 
-// Configuración JWT
+// ConfiguraciÃ³n JWT
 const JWT_SECRET = "clave_secreta_grpc_mongodb";
 
-// Iniciar sesión y generar token JWT
+// Iniciar sesiÃ³n y generar token JWT
 function login(call, callback) {
     const { username, password } = call.request;
 
@@ -33,7 +33,7 @@ function login(call, callback) {
     if (username !== "admin" || password !== "1234") {
         return callback({
             code: grpc.status.UNAUTHENTICATED,
-            message: "Usuario o contraseña incorrectos"
+            details: "Usuario o contraseÃ±a incorrectos"
         });
     }
 
@@ -44,10 +44,9 @@ function login(call, callback) {
     );
 
     callback(null, {
-        success: true,
-        message: "Inicio de sesión exitoso",
-        token
-    });
+    token,
+    message: "Inicio de sesión exitoso"
+});
 }
 
 // Verificar el token JWT
@@ -59,7 +58,7 @@ function verifyToken(call, callback) {
         if (!authorization || authorization.length === 0) {
             return callback({
                 code: grpc.status.UNAUTHENTICATED,
-                message: "Se requiere un token de autenticación"
+                details: "Se requiere un token de autenticaciÃ³n"
             });
         }
 
@@ -72,7 +71,7 @@ function verifyToken(call, callback) {
     } catch (error) {
         callback({
             code: grpc.status.UNAUTHENTICATED,
-            message: "Token inválido o expirado"
+            details: "Token invÃ¡lido o expirado"
         });
 
         return false;
@@ -94,7 +93,7 @@ async function getProducts(call, callback) {
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -114,25 +113,25 @@ async function getProductById(call, callback) {
         if (!product) {
             return callback({
                 code: grpc.status.NOT_FOUND,
-                message: "Producto no encontrado"
+                details: "Producto no encontrado"
             });
         }
 
         callback(null, {
             success: true,
-            message: "Producto encontrado",
+            details: "Producto encontrado",
             product
         });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
 
-// Filtrar productos por categoría
+// Filtrar productos por categorÃ­a
 async function getProductsByCategory(call, callback) {
 
     if (!verifyToken(call, callback)) {
@@ -149,7 +148,7 @@ async function getProductsByCategory(call, callback) {
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -182,14 +181,14 @@ async function createProduct(call, callback) {
 
         callback(null, {
             success: true,
-            message: "Producto creado correctamente",
+            details: "Producto creado correctamente",
             product: newProduct
         });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -212,7 +211,7 @@ async function updateProduct(call, callback) {
         if (result.matchedCount === 0) {
             return callback({
                 code: grpc.status.NOT_FOUND,
-                message: "Producto no encontrado"
+                details: "Producto no encontrado"
             });
         }
 
@@ -220,14 +219,14 @@ async function updateProduct(call, callback) {
 
         callback(null, {
             success: true,
-            message: "Producto actualizado correctamente",
+            details: "Producto actualizado correctamente",
             product: updatedProduct
         });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -247,19 +246,19 @@ async function deleteProduct(call, callback) {
         if (result.deletedCount === 0) {
             return callback({
                 code: grpc.status.NOT_FOUND,
-                message: "Producto no encontrado"
+                details: "Producto no encontrado"
             });
         }
 
         callback(null, {
             success: true,
-            message: "Producto eliminado correctamente"
+            details: "Producto eliminado correctamente"
         });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -289,67 +288,53 @@ async function getProductSummaries(call, callback) {
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
 
 
-async function getProductsWithDetails(call, callback) {
+
+// Consultar productos con paginaciÃ³n y ordenamiento
+async function getProductDetails(call, callback) {
 
     if (!verifyToken(call, callback)) {
         return;
     }
 
     try {
-        const products = await productsCollection.aggregate([
-            {
-                $lookup: {
-                    from: "categories",
-                    localField: "categoryId",
-                    foreignField: "id",
-                    as: "category"
-                }
-            },
-            {
-                $lookup: {
-                    from: "suppliers",
-                    localField: "supplierId",
-                    foreignField: "id",
-                    as: "supplier"
-                }
-            },
-            {
-                $unwind: "$category"
-            },
-            {
-                $unwind: "$supplier"
-            },
-            {
-                $project: {
-                    _id: 0,
-                    id: 1,
-                    name: 1,
-                    price: 1,
-                    stock: 1,
-                    category: "$category.name",
-                    supplier: "$supplier.name",
-                    country: "$supplier.country"
-                }
-            }
-        ]).toArray();
+        const product = await productsCollection.findOne({
+            id: call.request.id
+        });
 
-        callback(null, { products });
+        if (!product) {
+            return callback({
+                code: grpc.status.NOT_FOUND,
+                details: "Producto no encontrado"
+            });
+        }
+
+        const category = await db.collection("categories").findOne({
+            id: product.categoryId
+        });
+
+        const supplier = await db.collection("suppliers").findOne({
+            id: product.supplierId
+        });
+
+        callback(null, {
+            product: product,
+            category: category,
+            supplier: supplier
+        });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
-
-
 
 // Consultar productos con paginación y ordenamiento
 async function getProductsPaginated(call, callback) {
@@ -359,37 +344,33 @@ async function getProductsPaginated(call, callback) {
     }
 
     try {
-        const { page, pageSize, sortBy, sortOrder } = call.request;
+        const page = Math.max(1, Number(call.request.page) || 1);
+        const pageSize = Math.max(1, Number(call.request.pageSize) || 5);
 
-        const currentPage = Math.max(1, page || 1);
-        const limit = Math.min(100, Math.max(1, pageSize || 5));
-
-        const allowedFields = ["name", "price"];
-        const field = allowedFields.includes(sortBy)
-            ? sortBy
+        const sortBy = ["name", "price"].includes(call.request.sortBy)
+            ? call.request.sortBy
             : "name";
 
-        const order = sortOrder === "desc" ? -1 : 1;
-
-        const products = await productsCollection.find({})
-            .sort({ [field]: order })
-            .skip((currentPage - 1) * limit)
-            .limit(limit)
-            .toArray();
+        const sortOrder = call.request.sortOrder === "desc" ? -1 : 1;
 
         const total = await productsCollection.countDocuments();
 
+        const products = await productsCollection
+            .find({})
+            .sort({ [sortBy]: sortOrder })
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .toArray();
+
         callback(null, {
             products,
-            total,
-            page: currentPage,
-            pageSize: limit
+            total
         });
 
     } catch (error) {
         callback({
             code: grpc.status.INTERNAL,
-            message: error.message
+            details: error.message
         });
     }
 }
@@ -413,11 +394,11 @@ async function startServer() {
             deleteProduct,
             getProductSummaries,
             getProductsPaginated,
-            getProductsWithDetails
+            getProductDetails
         });
 
         server.bindAsync(
-            "127.0.0.1:50051",
+            "127.0.0.1:50052",
             grpc.ServerCredentials.createInsecure(),
             (error, port) => {
                 if (error) {
@@ -436,3 +417,5 @@ async function startServer() {
 }
 
 startServer();
+
+

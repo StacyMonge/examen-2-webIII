@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div>
+            <strong>GP</strong>
+            <span>Gestión de Productos</span>
+        </div>
+        <button id="logoutButton" class="logout-button">Cerrar sesión</button>
+    </header>
+
+    <main class="dashboard">
+        <section class="welcome">
+            <h1>Panel de administración</h1>
+            <p>Gestioná los productos del sistema.</p>
+        </section>
+
+        <section class="panel">
+    <div class="section-heading">
+        <div>
+            <h2>Implementación</h2>
+            <p>Seleccioná dónde se almacenarán los productos.</p>
+        </div>
+
+        <select id="implementationSelect">
+            <option value="memory">Memoria</option>
+            <option value="mongodb">MongoDB</option>
+        </select>
+
+        <button id="changeImplementationButton">
+            Cambiar implementación
+        </button>
+    </div>
+</section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <span>Total de productos</span>
+                <h2 id="totalProducts">0</h2>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <div>
+                    <h2>Productos</h2>
+                    <p>Listado y administración de productos</p>
+                </div>
+                <button id="newProductButton">+ Nuevo producto</button>
+            </div>
+
+            <div class="filters">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar por nombre..."
+                >
+
+                <input
+                    type="number"
+                    id="categoryFilter"
+                    placeholder="Filtrar por ID de categoría"
+                    min="1"
+                >
+
+                <button id="filterButton">Filtrar</button>
+                <button id="showAllButton" class="secondary-button">
+                    Mostrar todos
+                </button>
+            </div>
+
+            <div class="advanced-tools">
+    <button id="summariesButton">Ver resúmenes</button>
+
+    <select id="sortBy">
+        <option value="name">Ordenar por nombre</option>
+        <option value="price">Ordenar por precio</option>
+    </select>
+
+    <select id="sortOrder">
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+    </select>
+
+    <button id="sortButton">Aplicar orden</button>
+</div>
+
+<div id="summariesPanel" class="result-panel" hidden>
+    <h3>Resumen de productos</h3>
+    <div id="summariesContent"></div>
+</div>
+
+<div id="detailsPanel" class="result-panel" hidden>
+    <h3>Detalles del producto</h3>
+    <div id="detailsContent"></div>
+</div>
+
+<div class="pagination">
+    <button id="previousPage" class="secondary-button">Anterior</button>
+    <span id="pageInfo">Página 1</span>
+    <button id="nextPage" class="secondary-button">Siguiente</button>
+</div>
+
+            <p id="statusMessage"></p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Proveedor</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel form-panel" id="formPanel">
+            <h2 id="formTitle">Nuevo producto</h2>
+
+            <form id="productForm">
+                <div class="form-grid">
+                    <div>
+                        <label for="productName">Nombre</label>
+                        <input id="productName" required>
+                    </div>
+
+                    <div>
+                        <label for="productPrice">Precio</label>
+                        <input
+                            id="productPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="categoryId">ID de categoría</label>
+                        <input id="categoryId" type="number" min="1" required>
+                    </div>
+
+                    <div>
+                        <label for="supplierId">ID de proveedor</label>
+                        <input id="supplierId" type="number" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="saveButton">Guardar producto</button>
+                    <button type="button" id="cancelButton" class="secondary-button">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
